@@ -1,6 +1,6 @@
 <template>
     <div class="w-full">
-        <Header/>
+        <HeaderTechMobile/>
     </div>
     <div class="w-full border-y-2 border-gray-300">
         <HeaderBottom/>

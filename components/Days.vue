@@ -56,13 +56,10 @@
             }
       };
 
-      // Update countdown every second
       setInterval(updateCountdown, 1000);
     };
     
-    // // dayjs.extend(relativeTime)
-    // const target = dayjs('2023/06/06 14:00')
-    // console.log(dayjs().to(target));
+
     
 
 </script>

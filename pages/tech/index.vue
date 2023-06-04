@@ -1,8 +1,26 @@
 <template>
     <div class="container mx-auto px-[5px] md:px-[130px] md:pt-[20px]">
-        <p class="text-gray-500 h-[64px]">Home > Computer and Tech</p>
+        <div class="md:hidden flex h-[60px] bg-white w-[120%]">
+            <Swiper
+                
+                :modules="[SwiperAutoplay, SwiperNavigation, SwiperGrid]"
+                :autoplay="{
+                    delay: 100000,
+                    disableOnInteraction: true,
+                }"
+                :slides-per-view="3" :space-between="0" :loop="true"
+
+            >
+                <SwiperSlide v-for="slide in offers" :key="slide.id" style="width: auto">
+                    <div class="flex justify-center p-[9px] border m-2 rounded-xl bg-gray-100">
+                            <p class="text-blue-400">{{ slide.name }}</p>
+                    </div>
+                </SwiperSlide >
+            </Swiper>
+        </div>
+        <p class="hidden md:block text-gray-500 h-[64px]">Home > Computer and Tech</p>
         <div class="flex">
-            <aside class="w-[20%]">
+            <aside class=" md:block md:w-[20%]" :class="isFilter ? 'hidden' : ''">
                 <div class="relative inline-block text-left w-full border-b border-gray-300">
                     <button @click="toggleCategory('Category')" class="inline-flex w-full justify-between items-center gap-x-1.5 rounded-md px-4 py-2 text-sm font-semibold text-gray-900" id="menu-button" aria-expanded="true" aria-haspopup="true">
                         Category <Icon v-if="!isCategory" name="material-symbols:keyboard-arrow-down-rounded" class="text-[20px] text-gray-400" /> <Icon v-else name="ic:round-keyboard-arrow-up" class="text-[20px] text-gray-400" />
@@ -93,19 +111,25 @@
                     </div>           
                 </div>
             </aside>
-            <div class="w-[80%] pl-[12px]">
-                <div class="flex justify-between items-center bg-white p-[10px] rounded-md border border-gray-300">
-                    <p>12,911 items in <b>Mobile accessory</b></p>
-                    <div class="flex items-center">
-                        <el-checkbox label="Verified only" size="large" />
-                        <el-select  class="m-2" placeholder="Featured" size="large">
-                            <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
-                            />
-                        </el-select>
+            <div class="md:w-[80%] md:pl-[12px]">
+                <div class="flex justify-between  items-center bg-white p-[10px] mt-2 rounded-md border border-gray-300">
+                    <p class="hidden md:block">12,911 items in <b>Mobile accessory</b></p>
+                    <div class="flex items-center justify-between w-full md:w-auto">
+                        <div class="hidden md:block">
+                        
+                            <el-checkbox label="Verified only" size="large" />
+                                <el-select  class="m-2" placeholder="Featured" size="large">
+                                    <el-option
+                                        v-for="item in options"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value"
+                                    />
+                            </el-select>
+                        </div>
+                        <div class="md:hidden block">
+                            <p @click="toggelFitler" class="flex items-center justify-center gap-2 border px-6 py-2 rounded-md">Filter({{ checkList.length }}) <Icon name="material-symbols:filter-alt-outline"  />  </p>
+                        </div>
                         <el-radio-group v-model="isCollapse" style="">
                             <el-radio-button :label="false"><Icon name="carbon:show-data-cards" class="text-[22px]" :class="isCollapse ? 'text-blue-400' : 'text-black' " /></el-radio-button>
                             <el-radio-button :label="true"><Icon name="clarity:view-cards-line" class="text-[22px]" :class="isCollapse ? 'text-black' : 'text-blue-300' " /></el-radio-button>
@@ -120,19 +144,19 @@
                     <button class="text-blue-400 my-auto" @click="deleteAll">Clear all filter</button>
                 </div>
 
-                <div class="grid grid-cols-3 gap-8 mt-[20px]">
-                    <div v-for="el in paginatedData" :key="el.id" class=" pt-[15px] bg-white flex flex-col items-center justify-start rounded-md border border-gray-300">
-                            <img :src="el.image" alt="" class="mb-[20px]">
-                       <div class="bg-gray-50 w-full rounded-b-md border-y border-gray-300 flex">
+                <div class="grid grid-cols-1 gap-2 md:grid-cols-3 md:gap-8 mt-[20px]">
+                    <div v-for="el in paginatedData" :key="el.id" class=" pt-[15px] bg-white flex md:flex-col items-center justify-start rounded-md border border-gray-300">
+                        <img :src="el.image" alt="" class="mb-[20px] w-[98px] h-[98px] md:w-auto md:h-auto">
+                        <div class="md:bg-gray-50 md:w-full rounded-b-md md:border-y border-gray-300 flex">
                          
-                                <div class="bg-gray-50 p-[20px] w-full rounded-b-md">
-                                    <p class="flex justify-start items-center text-[20px] font-[600]"><Icon name="fxemoji:heavydollarsign" class="" />{{ el.price }}</p>
-                                    <div class="demo-rate-block flex items-center">
-                                        <el-rate  v-model="el.rating" size="large" allow-half />
-                                        <p class="text-[#FF9017] text-[18px] ml-3">{{ el.rating }}</p>
-                                    </div>
-                                    <p class="text-[#606060] text-[21px] font-[600]">{{ el.name }}</p>
+                            <div class="md:bg-gray-50 p-[20px] w-full rounded-b-md flex flex-col items-start justify-start">
+                                <p class="flex justify-start items-center text-[20px] font-[600]"><Icon name="fxemoji:heavydollarsign" class="" />{{ el.price }}</p>
+                                <div class="demo-rate-block flex items-center">
+                                    <el-rate  v-model="el.rating" size="large" allow-half />
+                                    <p class="text-[#FF9017] text-[18px] ml-3">{{ el.rating }}</p>
                                 </div>
+                                <p class="text-[#606060] text-[21px] font-[600]">{{ el.name }}</p>
+                            </div>
                           
                             <div class="m-[19px] border w-[48px] h-[40px] flex items-center justify-center rounded-md shadow">
                                 <Icon name="ic:baseline-favorite-border" class="text-blue-600 text-[22px]"  />
@@ -143,9 +167,9 @@
                 </div>
 
                 <!-- Pagination -->
-                <div class="flex items-center justify-between  border-gray-200 px-4 py-3 sm:px-6">
+                <div class="flex  items-center justify-between  border-gray-200 px-4 py-3 sm:px-6">
                     
-                    <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-end ">
+                    <div class="flex flex-1 items-center justify-end ">
                         <div>
                             <el-select v-model="itemsPerPage" class="m-2 w-[100px]" placeholder="Show 9" size="large">
                                 <el-option
@@ -163,7 +187,6 @@
                                         <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
                                     </svg>
                                 </a>
-                                <!-- Current: "z-10 bg-indigo-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" -->
                                 <a v-for="el in totalPages" aria-current="page" @click="changePage(el)"  class="relative z-10 inline-flex items-center bg-gray-150 border border-2 px-4 py-2 text-sm font-semibold text-black focus:z-20 " :class=" currentPage === el ? 'bg-blue-400 text-white' : ''">{{ el }}</a>
                                 
                                 <a  class="relative inline-flex items-center rounded-r-md px-2 py-2 text-black ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
@@ -182,6 +205,16 @@
 </template>
 
 <script setup>
+
+const isFilter = ref(true)
+
+const toggelFitler = () =>{
+    isFilter.value = !isFilter.value
+}
+definePageMeta({
+  layout: "tech",
+});
+
 const state = useCounterStore();
 
 const isCategory = ref(false)
@@ -258,7 +291,6 @@ const paginatedData = computed(() => {
 const totalPages = computed(() => Math.ceil(offers.length / itemsPerPage.value));
 
 const nextPage = () => {
-    console.log(totalPages.value, currentPage.value)
     if (currentPage.value < totalPages.value) {
     currentPage.value += 1;
     }
@@ -291,6 +323,21 @@ const options = [
     label: '30/page',
   },
 ]
+
+
+const {name} = useRoute();
+useHead({
+    title: `${name} e-commerce`,
+    meta: [
+    {
+        name: "description", content: `Technologies and Electronics`
+    },
+    {
+        name: "author", content: "Fakhriddin Abduraimov"
+    }
+    ]
+})
+
 </script>
 
 <style lang="scss" scoped>

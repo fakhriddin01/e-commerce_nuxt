@@ -117,6 +117,18 @@
 
 <script setup>
 
+const {name} = useRoute();
+useHead({
+    title: `e-commerce home`,
+    meta: [
+    {
+        name: "description", content: `All you need to buy is here, online shop`
+    },
+    {
+        name: "author", content: "Fakhriddin Abduraimov"
+    }
+    ]
+})
  
 </script>
 
